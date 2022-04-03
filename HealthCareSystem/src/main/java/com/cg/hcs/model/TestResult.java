@@ -1,7 +1,5 @@
 package com.cg.hcs.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,31 +10,33 @@ import javax.persistence.Table;
 public class TestResult {
 	@Id
 	@Column(name = "Id")
-	private int id;
+	private Integer id;
 	@Column(name = "TestReading")
-	private double testReading;
-	@Column(name = "Condition")
+	private Double testReading;
+	@Column(name = "Condition",length=20)
 	private String condition;
+	private Appointment appointment;
 	
 	public TestResult() {
 		super();
 	}
-	public TestResult(int id, double testReading, String condition) {
+	public TestResult(Integer id, Double testReading, String condition,Appointment appointment) {
 		super();
 		this.id = id;
 		this.testReading = testReading;
 		this.condition = condition;
+		this.appointment=appointment;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public double getTestReading() {
+	public Double getTestReading() {
 		return testReading;
 	}
-	public void setTestReading(double testReading) {
+	public void setTestReading(Double testReading) {
 		this.testReading = testReading;
 	}
 	public String getCondition() {
@@ -45,7 +45,15 @@ public class TestResult {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
-	
-	
-
+	public Appointment getAppointment() {
+		return appointment;
+	}
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
+	@Override
+	public String toString() {
+		return "TestResult [id=" + id + ", testReading=" + testReading + ", condition=" + condition + ", appointment="
+				+ appointment + "]";
+	}
 }
