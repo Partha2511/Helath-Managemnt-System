@@ -1,5 +1,8 @@
 package com.cg.hcs.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,25 +18,33 @@ public class Patient {
 	@Column(name = "name",length=20)
 	private String name;
 	
-	@Column(name = "phoneNo",length=10)
+	@Column(name = "phoneNo",length=20)
 	private String phoneNo;
 	
-	@Column(name = "age",length=2)
+	@Column(name = "age",length=20)
 	private Integer age;
 	
-	@Column(name = "gender",length=2)
+	@Column(name = "gender",length=20)
 	 private String gender;
 	
-	
+	private Set<Appointment> appointments=new HashSet<Appointment>();
 
-	public Patient(Integer patientid, String name, String phoneNo, Integer age, String gender) {
+	public Patient() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	public Patient(Integer patientid, String name, String phoneNo, Integer age, String gender,
+			Set<Appointment> appointments) {
 		super();
 		this.patientid = patientid;
 		this.name = name;
 		this.phoneNo = phoneNo;
 		this.age = age;
 		this.gender = gender;
+		this.appointments = appointments;
 	}
+
 
 	public Integer getPatientid() {
 		return patientid;
@@ -75,11 +86,20 @@ public class Patient {
 		this.gender = gender;
 	}
 
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
 	@Override
 	public String toString() {
 		return "Patient [patientid=" + patientid + ", name=" + name + ", phoneNo=" + phoneNo + ", age=" + age
-				+ ", gender=" + gender + "]";
+				+ ", gender=" + gender + ", appointments=" + appointments + "]";
 	}
+	
 	
 	
 	
