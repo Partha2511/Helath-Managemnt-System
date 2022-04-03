@@ -1,4 +1,4 @@
-package com.cg.hcs;
+package com.cg.hcs.model;
 
 import java.time.LocalDate;
 
