@@ -17,7 +17,7 @@ public class TestResult {
 	private double testReading;
 	@Column(name = "Condition")
 	private String condition;
-	
+	//Appointment appointment=new Appointment();
 	public TestResult() {
 		super();
 	}
