@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -26,7 +27,8 @@ public class Patient {
 
 	@Column(name = "gender", length = 20)
 	private String gender;
-
+	
+	@OneToMany(mappedBy="Appointment")
 	private Set<Appointment> appointments = new HashSet<Appointment>();
 
 	public Patient() {
