@@ -7,6 +7,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -18,17 +22,22 @@ public class Appointment {
 	@Id
 	@Column(name = "Id")
 	private Integer id;
-	@Column(name = "AppointmentDate")
+	@Column(name = "Appointmentdate")
 	private LocalDate appointmentDate;
-	@Column(name="ApprovalStatus")
+	@Column(name="Approvalstatus")
 	private boolean approvalStatus;
 	@OneToMany
+	@JoinTable(name="appointment_testresult"
+	,joinColumns= {@JoinColumn(name="appointment_id")}
+	,inverseJoinColumns= {@JoinColumn(name="test_id")})
 	private Set<DiagnosticTest> diagnosticTests = new HashSet<DiagnosticTest>();
 	@ManyToOne
+	@JoinColumn(name="patient_id")
 	private Patient patient;
 	@OneToOne
+	@JoinColumn(name="diagnosticcenter_id")
 	private DiagnosticCenter diagnosticCenter;
-	@OneToMany
+	@OneToMany(mappedBy="appointment")
 	private Set<TestResult> testResult = new HashSet<TestResult>();
 
 	public Appointment() {
