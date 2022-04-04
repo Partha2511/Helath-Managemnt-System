@@ -10,26 +10,33 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "diagnosticCenter_tbl")
+@Table(name = "diagnosticcenter_tbl")
 public class DiagnosticCenter {
 	@Id
 	@Column(name = "Id")
 	private Integer id;
 	@Column(name = "Name",length=20)
 	private String name;
-	@Column(name = "ContactNo",length=20)
+	@Column(name = "Contactno",length=20)
 	private String contactNo;
 	@Column(name = "Address",length=20)
 	private String address;
 	@Column(name = "Email",length=30)
 	private String contactEmail;
 	@ElementCollection
-	@CollectionTable(name = "center_services", joinColumns = @JoinColumn(name = "id"))
+	@CollectionTable(name = "center_services"
+	, joinColumns = @JoinColumn(name = "diagnosticcenter_id"))
 	@Column(name = "services",length=40)
 	private List<String> servicesOffered;
+	@ManyToMany
+	@JoinTable(name="diagnosticcenter_tests"
+	,joinColumns= {@JoinColumn(name="diagnosticcenter_id")}
+	,inverseJoinColumns= {@JoinColumn(name="diagnostictest_id")})
 	private Set<DiagnosticTest> tests = new HashSet<DiagnosticTest>();
 
 	public DiagnosticCenter() {

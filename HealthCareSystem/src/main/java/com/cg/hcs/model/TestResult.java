@@ -3,6 +3,7 @@ package com.cg.hcs.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,10 +12,11 @@ public class TestResult {
 	@Id
 	@Column(name = "Id")
 	private Integer id;
-	@Column(name = "TestReading")
+	@Column(name = "Testreading")
 	private Double testReading;
 	@Column(name = "Condition",length=20)
 	private String condition;
+	@ManyToOne
 	private Appointment appointment;
 	
 	public TestResult() {

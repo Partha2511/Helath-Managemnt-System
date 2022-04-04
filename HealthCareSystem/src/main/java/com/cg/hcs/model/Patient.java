@@ -19,7 +19,7 @@ public class Patient {
 	@Column(name = "name", length = 20)
 	private String name;
 
-	@Column(name = "phoneNo", length = 20)
+	@Column(name = "phoneno", length = 20)
 	private String phoneNo;
 
 	@Column(name = "age", length = 20)
@@ -27,8 +27,7 @@ public class Patient {
 
 	@Column(name = "gender", length = 20)
 	private String gender;
-	
-	@OneToMany(mappedBy="Appointment")
+	@OneToMany(mappedBy="patient")
 	private Set<Appointment> appointments = new HashSet<Appointment>();
 
 	public Patient() {

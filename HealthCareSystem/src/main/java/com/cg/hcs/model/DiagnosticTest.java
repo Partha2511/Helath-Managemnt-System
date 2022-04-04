@@ -6,22 +6,24 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="diagnosticTest_tbl")
+@Table(name="diagnostictest_tbl")
 public class DiagnosticTest {
 	@Id
 	@Column(name="Id")
 	private Integer id;
-	@Column(name="TestName",length=30)
+	@Column(name="Testname",length=30)
 	private String testName;
-	@Column(name="TestPrice")
+	@Column(name="Testprice")
 	private double testPrice;
-	@Column(name="NormalValue",length=30)
+	@Column(name="Normalvalue",length=30)
 	private String normalValue;
 	@Column(name="Units",length=30)
 	private String units;
+	@ManyToMany(mappedBy="tests")
 	private Set<DiagnosticCenter> diagnosticCenters=new HashSet<DiagnosticCenter>();
 	public DiagnosticTest() {
 		// TODO Auto-generated constructor stub
