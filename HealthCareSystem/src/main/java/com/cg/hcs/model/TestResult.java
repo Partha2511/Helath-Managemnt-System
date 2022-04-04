@@ -3,6 +3,7 @@ package com.cg.hcs.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +16,7 @@ public class TestResult {
 	private Double testReading;
 	@Column(name = "Condition",length=20)
 	private String condition;
+	@OneToOne
 	private Appointment appointment;
 	
 	public TestResult() {

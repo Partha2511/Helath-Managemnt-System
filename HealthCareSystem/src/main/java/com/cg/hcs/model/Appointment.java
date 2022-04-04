@@ -7,6 +7,9 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,9 +22,13 @@ public class Appointment {
 	private LocalDate appointmentDate;
 	@Column(name="ApprovalStatus")
 	private boolean approvalStatus;
+	@OneToMany
 	private Set<DiagnosticTest> diagnosticTests = new HashSet<DiagnosticTest>();
+	@ManyToOne
 	private Patient patient;
+	@OneToOne
 	private DiagnosticCenter diagnosticCenter;
+	@OneToMany
 	private Set<TestResult> testResult = new HashSet<TestResult>();
 
 	public Appointment() {

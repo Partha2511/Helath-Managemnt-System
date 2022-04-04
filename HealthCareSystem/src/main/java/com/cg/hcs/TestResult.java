@@ -5,7 +5,11 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.cg.hcs.model.Appointment;
 
 @Entity
 @Table(name = "testresult_tbl")
@@ -17,7 +21,8 @@ public class TestResult {
 	private double testReading;
 	@Column(name = "Condition")
 	private String condition;
-	//Appointment appointment=new Appointment();
+	@ManyToOne
+	Appointment appointment;
 	public TestResult() {
 		super();
 	}
