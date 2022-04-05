@@ -2,12 +2,10 @@ package com.cg.hcs.service;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.cg.hcs.model.Patient;
 import com.cg.hcs.model.TestResult;
 
-public interface IPatientService extends JpaRepository<Patient, Integer> {
+public interface IPatientService{
 	public Patient registerPatient(Patient patient);
 	public Patient updatePatientDetails(Patient patient);
 	public Patient viewPatient(String patientUserName);
