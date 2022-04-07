@@ -18,6 +18,6 @@ public interface IDiagnosticCenterRepository extends JpaRepository<DiagnosticCen
 	@Query("select c from DiagnosticCenter c where c.name=?1")
 	public DiagnosticCenter getDiagnosticCenter(String centerName);
 	
-	@Query("select a from appointment_tbl a join a.diagnosticCenter c where c.name=?1")
+	@Query("select a from Appointment a join a.diagnosticCenter c where c.name=?1")
 	public List<Appointment> getListOfAppointments(String centerName);
 }

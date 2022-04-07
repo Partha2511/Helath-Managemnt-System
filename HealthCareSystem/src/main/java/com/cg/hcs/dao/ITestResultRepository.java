@@ -11,6 +11,6 @@ import com.cg.hcs.model.TestResult;
 
 @Repository
 public interface ITestResultRepository extends JpaRepository<TestResult, Integer> {
-	@Query("select t from testresult_tbl t join t.appointment a join a.patient p where p=?1 ")
+	@Query("select t from TestResult t join t.appointment a join a.patient p where p=?1 ")
 	public Set<TestResult> viewResultsByPatient(Patient patient);
 }
