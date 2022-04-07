@@ -25,7 +25,7 @@ public class Appointment {
 	@Column(name = "Appointmentdate")
 	private LocalDate appointmentDate;
 	@Column(name="Approvalstatus")
-	private boolean approvalStatus;
+	private String approvalStatus;
 	@OneToMany
 	@JoinTable(name="appointment_testresult"
 	,joinColumns= {@JoinColumn(name="appointment_id")}
@@ -44,7 +44,7 @@ public class Appointment {
 
 	}
 
-	public Appointment(int id, LocalDate appointmentDate, boolean approvalStatus, Set<DiagnosticTest> diagnosticTests,
+	public Appointment(int id, LocalDate appointmentDate, String approvalStatus, Set<DiagnosticTest> diagnosticTests,
 			Patient patient, DiagnosticCenter diagnosticCenter, Set<TestResult> testResult) {
 		this.id = id;
 		this.appointmentDate = appointmentDate;
@@ -71,11 +71,11 @@ public class Appointment {
 		this.appointmentDate = appointmentDate;
 	}
 
-	public boolean isApprovalStatus() {
+	public String isApprovalStatus() {
 		return approvalStatus;
 	}
 
-	public void setApprovalStatus(boolean approvalStatus) {
+	public void setApprovalStatus(String approvalStatus) {
 		this.approvalStatus = approvalStatus;
 	}
 

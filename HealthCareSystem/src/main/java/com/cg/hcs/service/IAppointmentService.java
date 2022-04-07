@@ -11,7 +11,6 @@ public interface IAppointmentService {
 	public Set<Appointment> viewAppointments(String patientName);
 	public Appointment viewAppointment(int appointmentId);
 	public Appointment updateAppointment(Appointment appointment);
-	//doubt
-	public List<Appointment> getAppointmentList(int centerId,String test,int status);
+	public List<Appointment> getAppointmentList(int centerId,String test,String status);
 	public Appointment removeAppointment(Appointment appointment);
 }
