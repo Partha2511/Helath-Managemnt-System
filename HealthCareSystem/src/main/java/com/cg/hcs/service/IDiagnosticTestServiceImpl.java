@@ -25,9 +25,9 @@ public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
 	}
 
 	@Override
-	public List<DiagnosticTest> getTestsOfDiagnosticTest() {
+	public List<DiagnosticTest> getTestsOfDiagnosticCenter(int centerid) {
 		// TODO Auto-generated method stub
-		return repo.getTestsOfDiagnosticTest();
+		return repo.getTestsOfDiagnosticCenter(centerid);
 	}
 
 	@Override
@@ -45,6 +45,11 @@ public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
 	@Override
 	public DiagnosticTest removeTestFromDiagnosticCenter(int centerid, DiagnosticTest test) {
 		// TODO Auto-generated method stub
+		if(repo.existsById(test.getId()))
+		{
+			repo.findById(test.getId()).get().getDiagnosticCenters().removeIf((c)->c.getId()==centerid);
+			return test;
+		}
 		
 		return null;
 	}
