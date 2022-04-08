@@ -1,5 +1,6 @@
 package com.cg.hcs.exception;
 
+@SuppressWarnings("serial")
 public class PatientException extends Exception {
 	public PatientException(){
 		
