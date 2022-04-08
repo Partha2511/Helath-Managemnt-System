@@ -49,7 +49,7 @@ public class IAppointmentServiceImpl implements IAppointmentService {
 	}
 
 	@Override
-	public List<Appointment> getAppointmentList(int centerId, String test, int status) {
+	public List<Appointment> getAppointmentList(int centerId, String test, String status) {
 		return repo.getAppointmentList(centerId, test, status);
 	}
 

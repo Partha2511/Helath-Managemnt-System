@@ -8,6 +8,6 @@ import com.cg.hcs.model.TestResult;
 public interface ITestResultService {
 	public TestResult addTestResult(TestResult tr);
 	public TestResult updateResult(TestResult tr);
-	public TestResult removeTestResult(int id,TestResult tr);
+	public TestResult removeTestResult(int id);
 	public Set<TestResult> viewResultsByPatient(Patient patient);
 }
