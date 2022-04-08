@@ -10,10 +10,10 @@ import com.cg.hcs.model.Appointment;
 
 
 public interface IAppointmentService {
-	public ResponseEntity<Appointment> addAppointment(Appointment appointment)throws AppointmentException;
-	public Set<Appointment> viewAppointments(String patientName);
-	public Appointment viewAppointment(int appointmentId);
-	public Appointment updateAppointment(Appointment appointment);
-	public List<Appointment> getAppointmentList(int centerId,String test,String status);
-	public Appointment removeAppointment(Appointment appointment);
+	public ResponseEntity<Appointment> addAppointment(Appointment appointment) throws AppointmentException;
+	public ResponseEntity<Set<Appointment>> viewAppointments(String patientName) throws AppointmentException;
+	public ResponseEntity<Appointment> viewAppointment(int appointmentId) throws AppointmentException;
+	public ResponseEntity<Appointment> updateAppointment(Appointment appointment) throws AppointmentException;
+	public ResponseEntity<List<Appointment>> getAppointmentList(int centerId,String test,String status) throws AppointmentException;
+	public ResponseEntity<Appointment> removeAppointment(Appointment appointment) throws AppointmentException;
 }

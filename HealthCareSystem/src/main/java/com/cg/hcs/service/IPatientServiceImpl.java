@@ -7,14 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.cg.hcs.dao.IDiagnosticTestRepository;
 import com.cg.hcs.dao.IPatientRepository;
-import com.cg.hcs.exception.AppointmentException;
-import com.cg.hcs.exception.DiagnosticCenterException;
 import com.cg.hcs.exception.PatientException;
-import com.cg.hcs.model.Appointment;
-import com.cg.hcs.model.DiagnosticCenter;
-import com.cg.hcs.model.DiagnosticTest;
 import com.cg.hcs.model.Patient;
 import com.cg.hcs.model.TestResult;
 @Service
@@ -54,13 +48,12 @@ public class IPatientServiceImpl implements IPatientService{
 	}
 
 	@Override
-	public ResponseEntity<ResponseEntity<Patient>> getAllTestResult(String patientUserName) throws PatientException {
+	public ResponseEntity<List<TestResult>> getAllTestResult(String patientUserName) throws PatientException {
 		// TODO Auto-generated method stub
-		if (repo.findAll().size() == 0) {
-			throw new PatientException("No Patient is available");
-		}
-		return new ResponseEntity<ResponseEntity<Patient>>((ResponseEntity<Patient>) repo.findAll(), HttpStatus.OK);
-		
+		List<TestResult> testres=repo.getAllTestResult(patientUserName);
+		if(testres.size()==0)
+			throw new PatientException("No test result available for the patient");
+		return new ResponseEntity<List<TestResult>>(testres,HttpStatus.OK);
 	}
 
 	@Override

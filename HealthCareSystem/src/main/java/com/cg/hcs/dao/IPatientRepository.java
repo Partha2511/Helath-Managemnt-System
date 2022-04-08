@@ -10,8 +10,9 @@ import com.cg.hcs.model.Patient;
 import com.cg.hcs.model.TestResult;
 @Repository
 public interface IPatientRepository extends JpaRepository<Patient, Integer> {
-	@Query("select r from Appointment a join a.patient p join a.testresult r where p.name=?1")
+	@Query("select r from Patient p join p.appointments a join a.testResult r where p.name=?1")
 	public List<TestResult> getAllTestResult(String patientUserName);
-	
+	@Query("select r from Patient p join p.appointments a join a.testResult r where r.id=?1")
+	public TestResult viewTestResult(int TestresultId);
 
 }

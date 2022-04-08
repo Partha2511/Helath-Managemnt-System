@@ -27,39 +27,46 @@ public class IAppointmentServiceImpl implements IAppointmentService {
 	}
 
 	@Override
-	public Set<Appointment> viewAppointments(String patientName) {
-		return repo.viewAppointments(patientName);
-	}
-
-	@Override
-	public Appointment viewAppointment(int appointmentId) {
-		if(repo.existsById(appointmentId)) {
-			return repo.findById(appointmentId).get();
+	public ResponseEntity<Set<Appointment>> viewAppointments(String patientName) throws AppointmentException {
+		Set<Appointment> appointments=repo.viewAppointments(patientName);
+		if(appointments.size()==0) {
+			throw new AppointmentException("No appointments are available for the given patient name");
 		}
-		return null;
+		return new ResponseEntity<Set<Appointment>>(appointments, HttpStatus.OK);
 	}
 
 	@Override
-	public Appointment updateAppointment(Appointment appointment) {
+	public ResponseEntity<Appointment> viewAppointment(int appointmentId) throws AppointmentException{
+		if(repo.existsById(appointmentId)) {
+			return new ResponseEntity<Appointment>(repo.findById(appointmentId).get(), HttpStatus.OK);
+		}
+		throw new AppointmentException("No appointment available for the given appointment Id");
+	}
+
+	@Override
+	public ResponseEntity<Appointment> updateAppointment(Appointment appointment) throws AppointmentException{
 		if(repo.existsById(appointment.getId())) {
 			repo.save(appointment);
-			return appointment;
+			return new ResponseEntity<Appointment>(appointment, HttpStatus.OK);
 		}
-		return null;
+		throw new AppointmentException("No appointment available for the given appointment Id");
 	}
 
 	@Override
-	public List<Appointment> getAppointmentList(int centerId, String test, String status) {
-		return repo.getAppointmentList(centerId, test, status);
+	public ResponseEntity<List<Appointment>> getAppointmentList(int centerId, String test, String status) throws AppointmentException{
+		List<Appointment> appointmnets= repo.getAppointmentList(centerId, test, status);
+		if(appointmnets.size()==0) {
+			throw new AppointmentException("No appointments found for the given details");
+		}
+		return new ResponseEntity<List<Appointment>>(appointmnets, HttpStatus.OK);
 	}
 
 	@Override
-	public Appointment removeAppointment(Appointment appointment) {
+	public ResponseEntity<Appointment> removeAppointment(Appointment appointment) throws AppointmentException{
 		if(repo.existsById(appointment.getId())) {
 			repo.deleteById(appointment.getId());
-			return appointment;
+			return new ResponseEntity<Appointment>(appointment, HttpStatus.OK);
 		}
-		return null;
+		throw new AppointmentException("No appointment available for the given details");
 	}
-
 }
