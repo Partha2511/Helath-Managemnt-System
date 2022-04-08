@@ -7,10 +7,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -35,7 +33,6 @@ public class Appointment {
 	@JoinColumn(name="patient_id")
 	private Patient patient;
 	@OneToOne
-	@JoinColumn(name="diagnosticcenter_id")
 	private DiagnosticCenter diagnosticCenter;
 	@OneToMany(mappedBy="appointment")
 	private Set<TestResult> testResult = new HashSet<TestResult>();

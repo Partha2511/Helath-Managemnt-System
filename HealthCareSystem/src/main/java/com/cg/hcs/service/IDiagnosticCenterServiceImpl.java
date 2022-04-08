@@ -3,9 +3,12 @@ package com.cg.hcs.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cg.hcs.dao.IDiagnosticCenterRepository;
+import com.cg.hcs.exception.DiagnosticCenterException;
 import com.cg.hcs.model.Appointment;
 import com.cg.hcs.model.DiagnosticCenter;
 import com.cg.hcs.model.DiagnosticTest;
@@ -16,61 +19,95 @@ public class IDiagnosticCenterServiceImpl implements IDiagnosticCenterService {
 	IDiagnosticCenterRepository repo;
 
 	@Override
-	public List<DiagnosticCenter> getAllDiagnosticCenters() {
-		return repo.findAll();
+	public ResponseEntity<List<DiagnosticCenter>> getAllDiagnosticCenters() throws DiagnosticCenterException {
+		if (repo.findAll().size() == 0) {
+			throw new DiagnosticCenterException("No Appointments are available");
+		}
+		return new ResponseEntity<List<DiagnosticCenter>>(repo.findAll(), HttpStatus.OK);
 	}
 
 	@Override
-	public DiagnosticCenter addDiagnosticCenter(DiagnosticCenter diagnosticCenter) {
+	public ResponseEntity<DiagnosticCenter> addDiagnosticCenter(DiagnosticCenter diagnosticCenter)
+			throws DiagnosticCenterException {
+		if (repo.existsById(diagnosticCenter.getId())) {
+			throw new DiagnosticCenterException("Center with the given Id already Exists");
+		}
 		repo.save(diagnosticCenter);
-		return diagnosticCenter;
+		return new ResponseEntity<DiagnosticCenter>(diagnosticCenter, HttpStatus.OK);
 	}
 
 	@Override
-	public DiagnosticCenter getDiagnosticCenterById(int diagnosticCenterId) {
+	public ResponseEntity<DiagnosticCenter> getDiagnosticCenterById(int diagnosticCenterId)
+			throws DiagnosticCenterException {
 		if (repo.existsById(diagnosticCenterId)) {
-			return repo.findById(diagnosticCenterId).get();
+			return new ResponseEntity<DiagnosticCenter>(repo.findById(diagnosticCenterId).get(), HttpStatus.OK);
 		}
-		return null;
+		throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
 	}
 
 	@Override
-	public DiagnosticCenter updateDiagnosticCenter(DiagnosticCenter diagnosticCenter) {
-		if(repo.existsById(diagnosticCenter.getId())) {
+	public ResponseEntity<DiagnosticCenter> updateDiagnosticCenter(DiagnosticCenter diagnosticCenter)
+			throws DiagnosticCenterException {
+		if (repo.existsById(diagnosticCenter.getId())) {
 			repo.save(diagnosticCenter);
+			return new ResponseEntity<DiagnosticCenter>(diagnosticCenter, HttpStatus.OK);
 		}
-		return null;
+		throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
 	}
 
 	@Override
-	public DiagnosticTest viewTestDetails(int diagnosticCenterId, String testName) {
-		return repo.viewTestDetails(diagnosticCenterId, testName);
-	}
-
-	@Override//doubt
-	public DiagnosticTest addTest(int diagnosticCenterId, int testId) {
-//		if(repo.find)
-		return null;
-	}
-
-	@Override
-	public DiagnosticCenter getDiagnosticCenter(String centerName) {
-		return repo.getDiagnosticCenter(centerName);
+	public ResponseEntity<DiagnosticTest> viewTestDetails(int diagnosticCenterId, String testName)
+			throws DiagnosticCenterException {
+		if (repo.existsById(diagnosticCenterId)) {
+			throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
+		}
+		DiagnosticTest test = repo.viewTestDetails(diagnosticCenterId, testName);
+		if (test == null) {
+			throw new DiagnosticCenterException("Test with the given name doesn't Exists");
+		}
+		return new ResponseEntity<DiagnosticTest>(test, HttpStatus.OK);
 	}
 
 	@Override
-	public DiagnosticCenter removeDiagnosticCenter(int id) {
+	public ResponseEntity<DiagnosticTest> addTest(int diagnosticCenterId, DiagnosticTest test)
+			throws DiagnosticCenterException {
+		if (repo.existsById(diagnosticCenterId)) {
+			DiagnosticCenter diagnosticCenter = repo.findById(diagnosticCenterId).get();
+			if (diagnosticCenter.getTests().contains(test)) {
+				throw new DiagnosticCenterException("Test already available in the Center");
+			}
+			diagnosticCenter.getTests().add(test);
+			return new ResponseEntity<DiagnosticTest>(test, HttpStatus.OK);
+		}
+		throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
+	}
+
+	@Override
+	public ResponseEntity<DiagnosticCenter> getDiagnosticCenter(String centerName) throws DiagnosticCenterException {
+		DiagnosticCenter center=repo.getDiagnosticCenter(centerName);
+		if(center==null) {
+			throw new DiagnosticCenterException("No Center exists with the given name");
+		}
+		return new ResponseEntity<DiagnosticCenter>(center, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<DiagnosticCenter> removeDiagnosticCenter(int id) throws DiagnosticCenterException {
 		if(repo.existsById(id)) {
-			DiagnosticCenter center=repo.findById(id).get();
+			DiagnosticCenter c=repo.findById(id).get();
 			repo.deleteById(id);
-			return center;
+			return new ResponseEntity<DiagnosticCenter>(c, HttpStatus.OK);
 		}
-		return null;
+		throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
 	}
 
 	@Override
-	public List<Appointment> getListOfAppointments(String centerName) {
-		return repo.getListOfAppointments(centerName);
+	public ResponseEntity<List<Appointment>> getListOfAppointments(String centerName) throws DiagnosticCenterException {
+		List<Appointment> al=repo.getListOfAppointments(centerName);
+		if(al.size()==0) {
+			throw new DiagnosticCenterException("No Center exists with the given name");
+		}
+		return new ResponseEntity<List<Appointment>>(al,HttpStatus.OK);
 	}
 
 }

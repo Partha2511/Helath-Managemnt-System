@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -38,7 +39,11 @@ public class DiagnosticCenter {
 	,joinColumns= {@JoinColumn(name="diagnosticcenter_id")}
 	,inverseJoinColumns= {@JoinColumn(name="diagnostictest_id")})
 	private Set<DiagnosticTest> tests = new HashSet<DiagnosticTest>();
-
+	@OneToMany
+	@JoinTable(name="diagnosticcenter_appointments"
+	,joinColumns= {@JoinColumn(name="diagnosticcenter_id")}
+	,inverseJoinColumns= {@JoinColumn(name="appointment_id")})
+	private Set<Appointment> appointments=new HashSet<Appointment>();
 	public DiagnosticCenter() {
 		// TODO Auto-generated constructor stub
 	}
