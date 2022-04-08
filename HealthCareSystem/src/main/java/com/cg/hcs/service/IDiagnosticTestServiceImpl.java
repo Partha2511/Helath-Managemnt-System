@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cg.hcs.dao.IDiagnosticTestRepository;
+import com.cg.hcs.exception.DiagnosticTestException;
 import com.cg.hcs.model.DiagnosticTest;
 @Service
 public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
@@ -13,25 +14,26 @@ public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
 	IDiagnosticTestRepository repo;
 
 	@Override
-	public List<DiagnosticTest> getAllTest() {
+	public List<DiagnosticTest> getAllTest() throws DiagnosticTestException {
 		// TODO Auto-generated method stub
-		return null;
+		return repo.findAll();
+		
 	}
 
 	@Override
-	public DiagnosticTest addNewTest(DiagnosticTest test) {
+	public DiagnosticTest addNewTest(DiagnosticTest test) throws DiagnosticTestException {
 		repo.save(test);
 		return test;
 	}
 
 	@Override
-	public List<DiagnosticTest> getTestsOfDiagnosticCenter(int centerid) {
+	public List<DiagnosticTest> getTestsOfDiagnosticCenter(int centerid) throws DiagnosticTestException{
 		// TODO Auto-generated method stub
 		return repo.getTestsOfDiagnosticCenter(centerid);
 	}
 
 	@Override
-	public DiagnosticTest updateTestDetail(DiagnosticTest test) {
+	public DiagnosticTest updateTestDetail(DiagnosticTest test) throws DiagnosticTestException{
 		// TODO Auto-generated method stub
 		if(repo.existsById(test.getId())) {
 			repo.save(test);
@@ -43,7 +45,7 @@ public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
 	}
 
 	@Override
-	public DiagnosticTest removeTestFromDiagnosticCenter(int centerid, DiagnosticTest test) {
+	public DiagnosticTest removeTestFromDiagnosticCenter(int centerid, DiagnosticTest test)throws DiagnosticTestException {
 		// TODO Auto-generated method stub
 		if(repo.existsById(test.getId()))
 		{
