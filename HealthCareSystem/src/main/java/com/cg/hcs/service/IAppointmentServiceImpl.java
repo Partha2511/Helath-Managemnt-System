@@ -69,5 +69,4 @@ public class IAppointmentServiceImpl implements IAppointmentService {
 		}
 		throw new AppointmentException("No appointment available for the given details");
 	}
-
 }
