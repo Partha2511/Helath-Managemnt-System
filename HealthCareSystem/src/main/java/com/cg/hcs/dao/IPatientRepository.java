@@ -14,5 +14,6 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
 	public List<TestResult> getAllTestResult(String patientUserName);
 	@Query("select r from Patient p join p.appointments a join a.testResult r where r.id=?1")
 	public TestResult viewTestResult(int TestresultId);
-
+	@Query("select p from Patient p where p.name=?1")
+	public Patient viewPatient(String patientUserName);
 }

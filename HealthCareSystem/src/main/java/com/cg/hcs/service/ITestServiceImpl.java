@@ -18,7 +18,6 @@ public class ITestServiceImpl implements ITestService{
 	@Autowired
 	ITestRepository repo;
 	
-	@Autowired
 	public  ResponseEntity<DiagnosticTest> addTest(DiagnosticTest test) throws TestException{
 		if(repo.existsById(test.getId())) {
 			throw new TestException("Test with the given Id already Exists");
@@ -28,7 +27,7 @@ public class ITestServiceImpl implements ITestService{
 		
 	}
 	
-	@Autowired
+
 	public ResponseEntity<DiagnosticTest> updateTest(DiagnosticTest test) throws TestException{
 		if(repo.existsById(test.getId())) {
 			repo.save(test);
@@ -37,7 +36,7 @@ public class ITestServiceImpl implements ITestService{
 		throw new TestException("Test with the given Id doesn't Exists");
 	}
 	
-	@Autowired
+
 	public ResponseEntity<DiagnosticTest> removeTest(DiagnosticTest test) throws TestException {
 		if(repo.existsById(test.getId())) {
 			repo.deleteById(test.getId());
@@ -47,7 +46,6 @@ public class ITestServiceImpl implements ITestService{
 		throw new TestException("Test with the given Id doesn't Exists");
 	}
 	
-	@Autowired
 	public ResponseEntity<List<DiagnosticTest>> viewAllTest(String criteria) throws TestException{
 		List<DiagnosticTest> d=repo.viewAllTest(criteria);
 		if(d.size()==0) {
@@ -55,5 +53,4 @@ public class ITestServiceImpl implements ITestService{
 		}
 		return new ResponseEntity<List<DiagnosticTest>>(d,HttpStatus.OK);
 	}
-
 }

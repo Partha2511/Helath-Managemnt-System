@@ -10,7 +10,6 @@ import com.cg.hcs.model.DiagnosticTest;
 @Repository
 public interface IDiagnosticTestRepository extends JpaRepository<DiagnosticTest, Integer> {
 	
-	
 	@Query("select t from DiagnosticTest t join t.diagnosticCenters c where c.id=?1")
 	public List<DiagnosticTest> getTestsOfDiagnosticCenter(int centerid);
 
