@@ -20,10 +20,9 @@ public class TestResult {
 	private Appointment appointment;
 	
 	public TestResult() {
-		super();
+
 	}
 	public TestResult(Integer id, Double testReading, String condition,Appointment appointment) {
-		super();
 		this.id = id;
 		this.testReading = testReading;
 		this.condition = condition;

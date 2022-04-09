@@ -11,8 +11,9 @@ import com.cg.hcs.dao.IPatientRepository;
 import com.cg.hcs.exception.PatientException;
 import com.cg.hcs.model.Patient;
 import com.cg.hcs.model.TestResult;
+
 @Service
-public class IPatientServiceImpl implements IPatientService{
+public class IPatientServiceImpl implements IPatientService {
 	@Autowired
 	IPatientRepository repo;
 
@@ -32,43 +33,35 @@ public class IPatientServiceImpl implements IPatientService{
 			return new ResponseEntity<Patient>(patient, HttpStatus.OK);
 		}
 		throw new PatientException("Patient with the given Id doesn't Exists");
-		
+
 	}
 
 	@Override
 	public ResponseEntity<Patient> viewPatient(String patientUserName) throws PatientException {
-		Patient pat=new Patient();
-		if (repo.existsById(pat.getPatientid())) {
-			repo.save(pat);
-			return new ResponseEntity<Patient>(pat, HttpStatus.OK);
-		}
+		Patient p = repo.viewPatient(patientUserName);
+		if (p != null)
+			return new ResponseEntity<Patient>(p, HttpStatus.OK);
+
 		throw new PatientException("Patient with the given Id doesn't Exists");
-		
-		
+
 	}
 
 	@Override
 	public ResponseEntity<List<TestResult>> getAllTestResult(String patientUserName) throws PatientException {
-		// TODO Auto-generated method stub
-		List<TestResult> testres=repo.getAllTestResult(patientUserName);
-		if(testres.size()==0)
+		List<TestResult> testres = repo.getAllTestResult(patientUserName);
+		if (testres.size() == 0)
 			throw new PatientException("No test result available for the patient");
-		return new ResponseEntity<List<TestResult>>(testres,HttpStatus.OK);
+		return new ResponseEntity<List<TestResult>>(testres, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<TestResult> viewTestResult(int TestresultId) throws PatientException {
-		if (repo.existsById(TestresultId)) {
-			throw new PatientException("Patient with the given Id doesn't Exists");
-		}
 		TestResult test = repo.viewTestResult(TestresultId);
 		if (test == null) {
 			throw new PatientException("Test with the given name doesn't Exists");
 		}
 		return new ResponseEntity<TestResult>(test, HttpStatus.OK);
-		
+
 	}
-	
-	
 
 }
