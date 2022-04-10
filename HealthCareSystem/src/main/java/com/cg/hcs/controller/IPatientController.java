@@ -17,11 +17,12 @@ import com.cg.hcs.exception.PatientException;
 
 import com.cg.hcs.model.Patient;
 import com.cg.hcs.model.TestResult;
+import com.cg.hcs.service.IPatientServiceImpl;
 
 
 public class IPatientController {
 	@Autowired
-	IPatientController impl;
+	IPatientServiceImpl impl;
 	
 	@PostMapping("/registerPatient")
 	public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient) throws PatientException {
