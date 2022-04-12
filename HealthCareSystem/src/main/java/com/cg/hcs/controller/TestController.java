@@ -11,16 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.hcs.exception.ErrorInfo;
 import com.cg.hcs.exception.TestException;
-
 import com.cg.hcs.model.DiagnosticTest;
 import com.cg.hcs.service.ITestServiceImpl;
 
+@RestController
 public class TestController {
 	@Autowired
 	ITestServiceImpl impl;
@@ -40,8 +42,8 @@ public class TestController {
 		return impl.removeTest(test);
 	}
 	
-	@GetMapping("/viewAllTest")
-	public ResponseEntity<List<DiagnosticTest>> viewAllTest(@RequestBody String criteria) throws TestException{
+	@GetMapping("/viewAllTest/{criteria}")
+	public ResponseEntity<List<DiagnosticTest>> viewAllTest(@PathVariable("criteria") String criteria) throws TestException{
 		return impl.viewAllTest(criteria);
 	}
 	@ExceptionHandler(TestException.class)

@@ -3,6 +3,7 @@ package com.cg.hcs.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class Patient {
 
 	@Column(name = "gender", length = 20)
 	private String gender;
-	@OneToMany(mappedBy="patient")
+	@OneToMany(mappedBy="patient",cascade=CascadeType.ALL)
 	private Set<Appointment> appointments = new HashSet<Appointment>();
 
 	public Patient() {

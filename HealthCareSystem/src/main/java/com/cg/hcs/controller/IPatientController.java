@@ -17,13 +17,14 @@ import com.cg.hcs.exception.PatientException;
 
 import com.cg.hcs.model.Patient;
 import com.cg.hcs.model.TestResult;
+import com.cg.hcs.service.IPatientServiceImpl;
 
 
 public class IPatientController {
 	@Autowired
-	IPatientController impl;
+	IPatientServiceImpl impl;
 	
-	@PostMapping("/registerPatients")
+	@PostMapping("/registerPatient")
 	public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient) throws PatientException {
 		return impl.registerPatient(patient);
 	}
@@ -33,17 +34,18 @@ public class IPatientController {
 		return impl.updatePatientDetails(patient);	
 	}
 	
-	@GetMapping("/viewPatient")
-	public ResponseEntity<Patient> viewPatient(@PathVariable String patientUserName) throws PatientException{
+	@GetMapping("/viewPatient/{name}")
+	public ResponseEntity<Patient> viewPatient(@PathVariable("name") String patientUserName) throws PatientException{
 		return impl.viewPatient(patientUserName);	
 	}
-	@GetMapping("/getAllTests")
-	public ResponseEntity<List<TestResult>> getAllTestResult(@PathVariable String patientUserName) throws PatientException{
+	
+	@GetMapping("/getAllTests/{name}")
+	public ResponseEntity<List<TestResult>> getAllTestResult(@PathVariable("name") String patientUserName) throws PatientException{
 		return impl.getAllTestResult(patientUserName);	
 	}
 	
-	@GetMapping("/viewTestResult")
-	public ResponseEntity<TestResult> viewTestResult(@PathVariable int TestresultId) throws PatientException{
+	@GetMapping("/viewTestResult/{id}")
+	public ResponseEntity<TestResult> viewTestResult(@PathVariable("id") int TestresultId) throws PatientException{
 		return impl.viewTestResult(TestresultId);	
 	}
 	

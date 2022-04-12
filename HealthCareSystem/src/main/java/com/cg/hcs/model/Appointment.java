@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,17 +25,17 @@ public class Appointment {
 	private LocalDate appointmentDate;
 	@Column(name="Approvalstatus")
 	private String approvalStatus;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="appointment_testresult"
 	,joinColumns= {@JoinColumn(name="appointment_id")}
 	,inverseJoinColumns= {@JoinColumn(name="test_id")})
 	private Set<DiagnosticTest> diagnosticTests = new HashSet<DiagnosticTest>();
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="patient_id")
 	private Patient patient;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private DiagnosticCenter diagnosticCenter;
-	@OneToMany(mappedBy="appointment")
+	@OneToMany(mappedBy="appointment",cascade=CascadeType.ALL)
 	private Set<TestResult> testResult = new HashSet<TestResult>();
 
 	public Appointment() {
