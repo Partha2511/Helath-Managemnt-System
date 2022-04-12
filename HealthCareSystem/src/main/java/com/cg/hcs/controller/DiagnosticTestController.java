@@ -29,12 +29,12 @@ public class DiagnosticTestController {
 	}
 	
 	@PostMapping("/addTests")
-	public ResponseEntity<DiagnosticTest> addNewTest(@ RequestBody DiagnosticTest test) throws DiagnosticTestException{
+	public ResponseEntity<DiagnosticTest> addNewTest(@RequestBody DiagnosticTest test) throws DiagnosticTestException{
 		return impl.addNewTest(test);	
 	}
 	
-	@GetMapping("/getTests")
-	public ResponseEntity<List<DiagnosticTest>> getTestsOfDiagnosticCenter1(@PathVariable int centerid) throws DiagnosticTestException{
+	@GetMapping("/getTests/{id}")
+	public ResponseEntity<List<DiagnosticTest>> getTestsOfDiagnosticCenter(@PathVariable("id") int centerid) throws DiagnosticTestException{
 		return impl.getTestsOfDiagnosticCenter(centerid);
 	
 	}
@@ -44,8 +44,8 @@ public class DiagnosticTestController {
 		return impl.updateTestDetail(test);
 	
 	}
-	@DeleteMapping("/removeTests")
-	public ResponseEntity<DiagnosticTest> removeTestFromDiagnosticCenter(@PathVariable int centerid, DiagnosticTest test)throws DiagnosticTestException{
+	@DeleteMapping("/removeTest/{id}")
+	public ResponseEntity<DiagnosticTest> removeTestFromDiagnosticCenter(@PathVariable("id") int centerid, @RequestBody DiagnosticTest test)throws DiagnosticTestException{
 		return impl.removeTestFromDiagnosticCenter(centerid, test);
 	
 	}

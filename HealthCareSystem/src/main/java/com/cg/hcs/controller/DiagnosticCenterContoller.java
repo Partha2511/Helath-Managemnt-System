@@ -33,6 +33,8 @@ public class DiagnosticCenterContoller {
 		return impl.addDiagnosticCenter(diagnosticCenter);	
 	}
 	
+	
+	
 	@ExceptionHandler(DiagnosticCenterException.class)
 	public ResponseEntity<ErrorInfo> handleDiagnosticCenterException(DiagnosticCenterException e, HttpServletRequest req){
 		ErrorInfo info=new ErrorInfo(LocalDateTime.now(), e.getMessage(), req.getRequestURI());
