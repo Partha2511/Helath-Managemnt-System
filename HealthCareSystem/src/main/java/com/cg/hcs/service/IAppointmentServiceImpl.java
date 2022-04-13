@@ -64,9 +64,23 @@ public class IAppointmentServiceImpl implements IAppointmentService {
 	@Override
 	public ResponseEntity<Appointment> removeAppointment(Appointment appointment) throws AppointmentException{
 		if(repo.existsById(appointment.getId())) {
-			repo.deleteById(appointment.getId());
+			Appointment a=repo.findById(appointment.getId()).get();
+			a.setDiagnosticCenter(null);
+			a.setDiagnosticTests(null);
+			a.setPatient(null);
+			a.setTestResult(null);
+			repo.save(a);
+			repo.deleteById(a.getId());
 			return new ResponseEntity<Appointment>(appointment, HttpStatus.OK);
 		}
 		throw new AppointmentException("No appointment available for the given details");
+	}
+
+	public Appointment getAppointmentById(int id) {
+		return repo.findById(id).get();
+	}
+	
+	public List<Appointment> getAllAppointments() {
+		return repo.findAll();
 	}
 }

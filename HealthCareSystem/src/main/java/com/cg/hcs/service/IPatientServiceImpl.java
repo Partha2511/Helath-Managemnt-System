@@ -58,10 +58,14 @@ public class IPatientServiceImpl implements IPatientService {
 	public ResponseEntity<TestResult> viewTestResult(int TestresultId) throws PatientException {
 		TestResult test = repo.viewTestResult(TestresultId);
 		if (test == null) {
-			throw new PatientException("Test with the given name doesn't Exists");
+			throw new PatientException("Test with the given test id doesn't Exists");
 		}
 		return new ResponseEntity<TestResult>(test, HttpStatus.OK);
 
+	}
+
+	public Patient getPatientById(int patientId) {
+		return repo.findById(patientId).get();
 	}
 
 }

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "patient_tbl")
 public class Patient {
@@ -29,22 +31,32 @@ public class Patient {
 	@Column(name = "gender", length = 20)
 	private String gender;
 	@OneToMany(mappedBy="patient",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private Set<Appointment> appointments = new HashSet<Appointment>();
 
 	public Patient() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public Patient(Integer patientid, String name, String phoneNo, 
-			Integer age, String gender,
-			Set<Appointment> appointments) {
-		this.patientid = patientid;
-		this.name = name;
-		this.phoneNo = phoneNo;
-		this.age = age;
-		this.gender = gender;
-		this.appointments = appointments;
-	}
+//	public Patient(Integer patientid, String name, String phoneNo, 
+//			Integer age, String gender) {
+//		this.patientid = patientid;
+//		this.name = name;
+//		this.phoneNo = phoneNo;
+//		this.age = age;
+//		this.gender = gender;
+//		this.appointments=new HashSet<Appointment>();
+//	}
+//
+//	public Patient(Integer patientid, String name, String phoneNo, 
+//			Integer age, String gender,
+//			Set<Appointment> appointments) {
+//		this.patientid = patientid;
+//		this.name = name;
+//		this.phoneNo = phoneNo;
+//		this.age = age;
+//		this.gender = gender;
+//		this.appointments = appointments;
+//	}
 
 	public Integer getPatientid() {
 		return patientid;
@@ -93,11 +105,4 @@ public class Patient {
 	public void setAppointments(Set<Appointment> appointments) {
 		this.appointments = appointments;
 	}
-
-	@Override
-	public String toString() {
-		return "Patient [patientid=" + patientid + ", name=" + name + ", phoneNo=" + phoneNo + ", age=" + age
-				+ ", gender=" + gender + ", appointments=" + appointments + "]";
-	}
-
 }

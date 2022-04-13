@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,21 +17,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.hcs.exception.AppointmentException;
 import com.cg.hcs.exception.ErrorInfo;
+import com.cg.hcs.exception.PatientException;
 import com.cg.hcs.model.Appointment;
+import com.cg.hcs.model.Patient;
 import com.cg.hcs.service.IAppointmentServiceImpl;
+import com.cg.hcs.service.IPatientServiceImpl;
 
 @RestController
+@RequestMapping("/appointment")
+@CrossOrigin("*")
 public class AppointmentController {
 	@Autowired
 	IAppointmentServiceImpl impl;
+	@Autowired
+	IPatientServiceImpl patientImpl;
 	
-	@PostMapping("/addAppointment")
-	public ResponseEntity<Appointment>  addAppointment(@RequestBody Appointment appointment) throws AppointmentException{
-		return impl.addAppointment(appointment);
+	@PostMapping("{patientId}/addAppointment")
+	public ResponseEntity<Appointment>  addAppointment(@PathVariable("patientId") int patientId,
+			@RequestBody Appointment appointment) throws AppointmentException, PatientException{
+		Patient p=patientImpl.getPatientById(patientId);
+		ResponseEntity<Appointment> re=impl.addAppointment(appointment);
+		p.getAppointments().add(appointment);
+		appointment.setPatient(p);
+		patientImpl.updatePatientDetails(p);
+		return re;
 	}
 	
 	@GetMapping("/viewAppointmentsByname/{name}")
@@ -43,9 +58,15 @@ public class AppointmentController {
 		return impl.viewAppointment(appointmentId);
 	}
 	
-	@PutMapping("/updateAppointment")
-	public ResponseEntity<Appointment> updateAppointment(@RequestBody Appointment appointment) throws AppointmentException{
-		return impl.updateAppointment(appointment);
+	@PutMapping("{id}/updateAppointment")
+	public ResponseEntity<Appointment> updateAppointment(@PathVariable("id") int id
+			,@RequestBody Appointment appointment) throws AppointmentException, PatientException{
+		Patient p=patientImpl.getPatientById(id);
+		ResponseEntity<Appointment> re=impl.updateAppointment(appointment);
+		p.getAppointments().add(appointment);
+		appointment.setPatient(p);
+		patientImpl.updatePatientDetails(p);
+		return re;
 	}
 	
 	@GetMapping("/getAppointments/{id}/{test}/{status}")
@@ -59,8 +80,13 @@ public class AppointmentController {
 		return impl.removeAppointment(appointment);
 	}
 	
-	@ExceptionHandler(AppointmentException.class)
-	public ResponseEntity<ErrorInfo> handleTestResultException(AppointmentException e, HttpServletRequest req){
+	@GetMapping("/getAllApointments")
+	public ResponseEntity<List<Appointment>> getAllAppointments() throws AppointmentException{
+		return new ResponseEntity<List<Appointment>>(impl.getAllAppointments(), HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorInfo> handleTestResultException(Exception e, HttpServletRequest req){
 		ErrorInfo info=new ErrorInfo(LocalDateTime.now(), e.getMessage(), req.getRequestURI());
 		return new ResponseEntity<ErrorInfo>(info, HttpStatus.NOT_FOUND);
 	}

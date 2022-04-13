@@ -1,9 +1,11 @@
 package com.cg.hcs.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,6 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "diagnosticcenter_tbl")
@@ -33,21 +37,26 @@ public class DiagnosticCenter {
 	@CollectionTable(name = "center_services"
 	, joinColumns = @JoinColumn(name = "diagnosticcenter_id"))
 	@Column(name = "services",length=40)
-	private List<String> servicesOffered;
-	@ManyToMany
+	private List<String> servicesOffered=new ArrayList<String>();
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name="diagnosticcenter_tests"
 	,joinColumns= {@JoinColumn(name="diagnosticcenter_id")}
 	,inverseJoinColumns= {@JoinColumn(name="diagnostictest_id")})
 	private Set<DiagnosticTest> tests = new HashSet<DiagnosticTest>();
-	@OneToMany
-	@JoinTable(name="diagnosticcenter_appointments"
-	,joinColumns= {@JoinColumn(name="diagnosticcenter_id")}
-	,inverseJoinColumns= {@JoinColumn(name="appointment_id")})
+	@JsonIgnore
+	@OneToMany(mappedBy="diagnosticCenter",cascade=CascadeType.ALL)
 	private Set<Appointment> appointments=new HashSet<Appointment>();
 	public DiagnosticCenter() {
 		// TODO Auto-generated constructor stub
 	}
-
+	public DiagnosticCenter(Integer id, String name, String contactNo,
+			String address, String contactEmail){
+		this.id = id;
+		this.name = name;
+		this.contactNo = contactNo;
+		this.address = address;
+		this.contactEmail = contactEmail;
+	}
 	public DiagnosticCenter(Integer id, String name, String contactNo,
 			String address, String contactEmail,
 			List<String> servicesOffered, Set<DiagnosticTest> tests) {
@@ -116,10 +125,12 @@ public class DiagnosticCenter {
 		this.tests = tests;
 	}
 
-	@Override
-	public String toString() {
-		return "DiagnosticCenter [id=" + id + ", name=" + name + ", contactNo=" + contactNo + ", address=" + address
-				+ ", contactEmail=" + contactEmail + ", servicesOffered=" + servicesOffered + ", tests=" + tests + "]";
+	public Set<Appointment> getAppointments() {
+		return appointments;
 	}
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+	
 
 }

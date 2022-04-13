@@ -26,20 +26,17 @@ public class User {
 	public User() {
 		
 	}
-
+	public User( String username, String password,String role) {
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
 	public User(Integer id, String username, String password, String role) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.role = role;
 	}
-	
-	public User(String username, String password, String role) {
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
-
 
 	public Integer getId() {
 		return id;

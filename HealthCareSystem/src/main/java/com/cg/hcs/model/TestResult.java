@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "testresult_tbl")
 public class TestResult {
@@ -16,6 +18,7 @@ public class TestResult {
 	private Double testReading;
 	@Column(name = "Condition",length=20)
 	private String condition;
+	@JsonIgnore
 	@ManyToOne
 	private Appointment appointment;
 	
@@ -51,10 +54,5 @@ public class TestResult {
 	}
 	public void setAppointment(Appointment appointment) {
 		this.appointment = appointment;
-	}
-	@Override
-	public String toString() {
-		return "TestResult [id=" + id + ", testReading=" + testReading + ", condition=" + condition + ", appointment="
-				+ appointment + "]";
 	}
 }

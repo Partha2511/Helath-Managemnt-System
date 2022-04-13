@@ -58,7 +58,7 @@ public class IDiagnosticCenterServiceImpl implements IDiagnosticCenterService {
 	@Override
 	public ResponseEntity<DiagnosticTest> viewTestDetails(int diagnosticCenterId, String testName)
 			throws DiagnosticCenterException {
-		if (repo.existsById(diagnosticCenterId)) {
+		if (!repo.existsById(diagnosticCenterId)) {
 			throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
 		}
 		DiagnosticTest test = repo.viewTestDetails(diagnosticCenterId, testName);
@@ -77,6 +77,7 @@ public class IDiagnosticCenterServiceImpl implements IDiagnosticCenterService {
 				throw new DiagnosticCenterException("Test already available in the Center");
 			}
 			diagnosticCenter.getTests().add(test);
+			repo.save(diagnosticCenter);
 			return new ResponseEntity<DiagnosticTest>(test, HttpStatus.OK);
 		}
 		throw new DiagnosticCenterException("Center with the given Id doesn't Exists");
@@ -95,7 +96,11 @@ public class IDiagnosticCenterServiceImpl implements IDiagnosticCenterService {
 	public ResponseEntity<DiagnosticCenter> removeDiagnosticCenter(int id) throws DiagnosticCenterException {
 		if(repo.existsById(id)) {
 			DiagnosticCenter c=repo.findById(id).get();
-			repo.deleteById(id);
+			c.getAppointments().stream().forEach(a->a.setDiagnosticCenter(null));
+			c.setAppointments(null);
+			c.setTests(null);
+			repo.save(c);
+			repo.delete(c);
 			return new ResponseEntity<DiagnosticCenter>(c, HttpStatus.OK);
 		}
 		throw new DiagnosticCenterException("Center with the given Id doesn't Exists");

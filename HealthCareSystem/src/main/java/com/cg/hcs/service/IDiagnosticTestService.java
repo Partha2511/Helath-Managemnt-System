@@ -14,3 +14,4 @@ public interface IDiagnosticTestService{
 	public  ResponseEntity<DiagnosticTest> updateTestDetail(DiagnosticTest test) throws DiagnosticTestException;
 	public ResponseEntity<DiagnosticTest> removeTestFromDiagnosticCenter(int centerid,DiagnosticTest test) throws DiagnosticTestException;
 }
+

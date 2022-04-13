@@ -12,8 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "appointment_tbl")
@@ -23,17 +24,18 @@ public class Appointment {
 	private Integer id;
 	@Column(name = "Appointmentdate")
 	private LocalDate appointmentDate;
-	@Column(name="Approvalstatus")
+	@Column(name="Approvalstatus",length=30)
 	private String approvalStatus;
+	@JsonIgnore
 	@OneToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="appointment_testresult"
+	@JoinTable(name="appointment_tests"
 	,joinColumns= {@JoinColumn(name="appointment_id")}
 	,inverseJoinColumns= {@JoinColumn(name="test_id")})
 	private Set<DiagnosticTest> diagnosticTests = new HashSet<DiagnosticTest>();
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="patient_id")
 	private Patient patient;
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	private DiagnosticCenter diagnosticCenter;
 	@OneToMany(mappedBy="appointment",cascade=CascadeType.ALL)
 	private Set<TestResult> testResult = new HashSet<TestResult>();
@@ -41,17 +43,21 @@ public class Appointment {
 	public Appointment() {
 
 	}
-
-	public Appointment(int id, LocalDate appointmentDate, String approvalStatus, Set<DiagnosticTest> diagnosticTests,
-			Patient patient, DiagnosticCenter diagnosticCenter, Set<TestResult> testResult) {
-		this.id = id;
-		this.appointmentDate = appointmentDate;
-		this.approvalStatus = approvalStatus;
-		this.diagnosticTests = diagnosticTests;
-		this.patient = patient;
-		this.diagnosticCenter = diagnosticCenter;
-		this.testResult = testResult;
-	}
+//	public Appointment(int id, LocalDate appointmentDate, String approvalStatus) {
+//		this.id = id;
+//		this.appointmentDate = appointmentDate;
+//		this.approvalStatus = approvalStatus;
+//	}
+//	public Appointment(int id, LocalDate appointmentDate, String approvalStatus, Set<DiagnosticTest> diagnosticTests,
+//			Patient patient, DiagnosticCenter diagnosticCenter, Set<TestResult> testResult) {
+//		this.id = id;
+//		this.appointmentDate = appointmentDate;
+//		this.approvalStatus = approvalStatus;
+//		this.diagnosticTests = diagnosticTests;
+//		this.patient = patient;
+//		this.diagnosticCenter = diagnosticCenter;
+//		this.testResult = testResult;
+//	}
 
 	public int getId() {
 		return id;
@@ -109,11 +115,5 @@ public class Appointment {
 		this.testResult = testResult;
 	}
 
-	@Override
-	public String toString() {
-		return "Appointment [id=" + id + ", appointmentDate=" + appointmentDate + ", approvalStatus=" + approvalStatus
-				+ ", diagnosticTests=" + diagnosticTests + ", patient=" + patient + ", diagnosticCenter="
-				+ diagnosticCenter + ", testResult=" + testResult + "]";
-	}
 
 }

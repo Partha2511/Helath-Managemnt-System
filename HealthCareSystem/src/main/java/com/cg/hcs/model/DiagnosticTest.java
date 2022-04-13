@@ -3,11 +3,14 @@ package com.cg.hcs.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="diagnostictest_tbl")
@@ -23,12 +26,21 @@ public class DiagnosticTest {
 	private String normalValue;
 	@Column(name="Units",length=30)
 	private String units;
-	@ManyToMany(mappedBy="tests")
+	@ManyToMany(mappedBy="tests",cascade=CascadeType.ALL)
+	@JsonIgnore
 	private Set<DiagnosticCenter> diagnosticCenters=new HashSet<DiagnosticCenter>();
+	
 	public DiagnosticTest() {
 		// TODO Auto-generated constructor stub
 	}
-	
+	public DiagnosticTest(Integer id, String testName, double testPrice
+			, String normalValue, String units) {
+		this.id = id;
+		this.testName = testName;
+		this.testPrice = testPrice;
+		this.normalValue = normalValue;
+		this.units = units;
+	}
 	public DiagnosticTest(Integer id, String testName, double testPrice
 			, String normalValue, String units,
 			Set<DiagnosticCenter> diagnosticCenters) {
@@ -75,9 +87,5 @@ public class DiagnosticTest {
 	public void setDiagnosticCenters(Set<DiagnosticCenter> diagnosticCenters) {
 		this.diagnosticCenters = diagnosticCenters;
 	}
-	@Override
-	public String toString() {
-		return "DiagnosticTest [id=" + id + ", testName=" + testName + ", testPrice=" + testPrice + ", normalValue="
-				+ normalValue + ", units=" + units + ", diagnosticCenters=" + diagnosticCenters + "]";
-	}
+	
 }

@@ -27,7 +27,7 @@ public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
 	@Override
 	public ResponseEntity<DiagnosticTest> addNewTest(DiagnosticTest test) throws DiagnosticTestException {
 		if (repo.existsById(test.getId())) {
-			throw new DiagnosticTestException("Patient with the given Id already Exists");
+			throw new DiagnosticTestException("Test with the given Id already Exists");
 		} 
 		repo.save(test);
 		return new ResponseEntity<DiagnosticTest>(test, HttpStatus.OK);
@@ -54,17 +54,36 @@ public class IDiagnosticTestServiceImpl implements IDiagnosticTestService{
 
 	@Override
 	public ResponseEntity<DiagnosticTest> removeTestFromDiagnosticCenter(int centerid, DiagnosticTest test)throws DiagnosticTestException {
-		// doubt
+
 		if(repo.existsById(test.getId()))
 		{	
-			if(repo.existsById(test.getId())) {
-			repo.findById(test.getId()).get().getDiagnosticCenters().removeIf((c)->c.getId()==centerid);
-			return new ResponseEntity<DiagnosticTest>(test, HttpStatus.OK);
-			}
-			throw new DiagnosticTestException("Test with this id does not exist");
+//			Set<DiagnosticCenter> diagnosticCenters = repo.findById(test.getId()).get().getDiagnosticCenters();
+//			DiagnosticTest t=new DiagnosticTest();
+//			t.setId(test.getId());
+//			t.setNormalValue(test.getNormalValue());
+//			t.setTestName(test.getTestName());
+//			t.setTestPrice(test.getTestPrice());
+//			t.setUnits(test.getUnits());
+//			for(DiagnosticCenter c:diagnosticCenters) {
+//				if(c.getId()!=centerid) {
+//					t.getDiagnosticCenters().add(c);
+//				}
+//			}
+//			repo.delete(test);
+//			repo.save(t);
+			DiagnosticTest t=repo.findById(test.getId()).get();
+			t.getDiagnosticCenters().removeIf(c->c.getId()==centerid);
+			repo.save(t);
+			return new ResponseEntity<DiagnosticTest>(test, HttpStatus.OK);	
 		}
-		
-		throw new DiagnosticTestException("Center with this id does not exist");
+		throw new DiagnosticTestException("Test with this id does not exist");
+
+	}
+
+	public DiagnosticTest getTestById(Integer id) {
+		if(repo.existsById(id))
+		return repo.findById(id).get();
+		return null;
 	}
 
 }

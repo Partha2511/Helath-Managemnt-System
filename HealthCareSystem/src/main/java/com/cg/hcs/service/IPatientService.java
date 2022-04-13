@@ -14,6 +14,5 @@ public interface IPatientService{
 	public ResponseEntity<Patient> viewPatient(String patientUserName) throws PatientException;
 	public ResponseEntity<List<TestResult>>  getAllTestResult(String patientUserName)throws PatientException;
 	public ResponseEntity<TestResult> viewTestResult(int TestresultId)throws PatientException;
-	
-
 }
+
